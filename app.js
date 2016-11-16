@@ -42,11 +42,19 @@ function run_one(config, subconfig) {
   app.use(function(req, res, next) {
     // modify req host header
     console.log('cas_user_name',req.session.cas_user_name);
+    console.log('cas_session:',req.session);
     isReplaceHostname = (subconfig.replaceHostname===undefined)? (config.replaceHostname || false) : subconfig.replaceHostname
     if (isReplaceHostname) {
       req['headers'].host = proxied_hostname;
     }
     req['headers'].http_x_forwarded_for = req.connection.remoteAddress;
+    req['headers'].http_x_proxy_cas_username = req.session.cas_user_name
+    req['headers'].http_x_proxy_cas_email = req.session.cas_user_email
+    req['headers'].http_x_proxy_cas_userid = req.session.cas_user_userId
+    req['headers'].http_x_proxy_cas_mobile = req.session.cas_user_mobile
+    req['headers'].http_x_proxy_cas_loginname = req.session.cas_user_loginName
+    
+
     proxy.web(req, res, { target: subconfig.proxy_url }, function(e){
       console.log('error '+ e);
     });
