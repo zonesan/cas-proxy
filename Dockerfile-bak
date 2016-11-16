@@ -1,0 +1,3 @@
+FROM cas_proxy
+
+COPY . /cas_proxy/
