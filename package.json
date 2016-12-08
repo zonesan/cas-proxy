@@ -17,9 +17,9 @@
   "author": "Chris Song",
   "license": "MIT",
   "dependencies": {
+    "casv2": "*",
     "express": "3.*",
-    "http-proxy": "*",
-    "casv2": "*"
+    "http-proxy": "*"
   },
   "devDependencies": {},
   "bugs": {
