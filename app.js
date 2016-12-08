@@ -48,7 +48,7 @@ function run_one(config, subconfig) {
     if (isReplaceHostname) {
       req['headers'].host = proxied_hostname;
     }
-    console.log('req.cookie',req.cookie);
+    console.log('req.cookieout',req.cookie);
     req['headers'].http_x_forwarded_for = req.connection.remoteAddress;
     req['headers'].http_x_proxy_cas_username = req.session.cas_user_name;
     req['headers'].http_x_proxy_cas_email = req.session.cas_user_email
