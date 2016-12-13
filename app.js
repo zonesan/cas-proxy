@@ -31,7 +31,7 @@ function run_one(config, subconfig) {
   var app = express();
   app.use(express.cookieParser());
   app.use(express.session({ secret: config.cookie_secret,cookie:{domain:'.phpinfo-configmap-test.app-dacp.dataos.io'}}));
-
+  //console.log('sbsbsb1');
   // Authentication
   cas_auth.configureCas(app, config);
 
@@ -42,9 +42,7 @@ function run_one(config, subconfig) {
   var proxied_hostname = url.parse(subconfig.proxy_url).hostname;
 
   app.use(function(req, res, next) {
-    setCookie('myCookie','this value of the cookie',{
-      domain:'.phpinfo-configmap-test.app-dacp.dataos.io'
-    })
+
     // modify req host header
     //console.log('cas_user_name',req.session.cas_user_name);
     //res.cookie('resc', '设置到cookie里的值', { expires: new Date(Date.now() + 900000), httpOnly: true });
