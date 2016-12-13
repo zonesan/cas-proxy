@@ -3,7 +3,7 @@ module.exports =  {
     "enable_cas_auth": true,
     "cas_server_url": process.env.CAS_SERVER,
 
-    "cookie_secret": "REPLACE_WITH_A_RANDOM_STRING_PLEASE",
+    "cookie_secret": "abcd12341234",
 
     replaceHostname: true,
 
