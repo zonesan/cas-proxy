@@ -19,7 +19,8 @@
   "dependencies": {
     "casv2": "*",
     "express": "3.*",
-    "http-proxy": "*"
+    "http-proxy": "*",
+    "set-cookie": "0.0.4"
   },
   "devDependencies": {},
   "bugs": {
