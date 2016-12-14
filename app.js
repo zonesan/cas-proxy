@@ -18,8 +18,8 @@ var cas_auth = require('./lib/cas-auth.js');
 
 console.log('Server starting...');
 
-run();
 
+run();
 function run() {
     for (i in config.proxy_settings) {
         var subconfig = config.proxy_settings[i];
@@ -30,13 +30,18 @@ function run() {
 function run_one(config, subconfig) {
     var app = express();
     app.use(express.cookieParser());
-    app.use(express.session({
-            secret: config.cookie_secret,
-            cookie: {
-                domain: '.phpinfo-configmap-test.app-dacp.dataos.io'
-            }
-        }
-    ));
+    //config.cookie_scope_domain!===
+
+    var sessionoption = {secret: config.cookie_secret};
+
+
+    if (config.cookie_scope_domain && config.cookie_scope_domain.length > 0) {
+        console.log("config.cookie_scope_domain",config.cookie_scope_domain)
+        sessionoption.cookie = {domain: '.' + config.cookie_scope_domain};
+    } else {
+        console.log("COOKIE_SCOPE_DOMAIN NOT specified or zero value.")
+    }
+    app.use(express.session(sessionoption));
     //console.log('sbsbsb1');
     // Authentication
     cas_auth.configureCas(app, config);
