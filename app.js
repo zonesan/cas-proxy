@@ -42,9 +42,10 @@ function run_one(config, subconfig) {
         console.log("COOKIE_SCOPE_DOMAIN NOT specified or zero value.")
     }
     app.use(express.session(sessionoption));
-    //console.log('sbsbsb1');
+
     // Authentication
     cas_auth.configureCas(app, config);
+    console.log('ws come here 从cas_auth出来了');
 
     var proxy = httpProxy.createProxyServer({
         target: subconfig.proxy_url
@@ -53,7 +54,7 @@ function run_one(config, subconfig) {
     var proxied_hostname = url.parse(subconfig.proxy_url).hostname;
 
     app.use(function (req, res, next) {
-
+        console.log('ws come here 进入use');
         // modify req host header
         //console.log('cas_user_name',req.session.cas_user_name);
         //res.cookie('resc', '设置到cookie里的值', { expires: new Date(Date.now() + 900000), httpOnly: true });
@@ -74,6 +75,11 @@ function run_one(config, subconfig) {
         proxy.web(req, res, {target: subconfig.proxy_url}, function (e) {
             console.log('error ' + e);
         });
+
+        proxyServer.on('upgrade', function (req, socket, head) {
+            console.log('ws come here 进入proxyServer');
+            proxy.ws(req, socket, head);
+        });
     });
 
 
@@ -85,6 +91,6 @@ function run_one(config, subconfig) {
         https.createServer(options, app).listen(subconfig.listen_port_ssl);
         console.log('Server listening on ' + subconfig.listen_port_ssl + '(SSL)');
     }
-    http.createServer(app).listen(subconfig.listen_port);
+    var proxyServer = http.createServer(app).listen(subconfig.listen_port);
     console.log('Server listening on ' + subconfig.listen_port + ' -> ' + subconfig.proxy_url);
 }
