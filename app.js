@@ -97,10 +97,11 @@ function run_one(config, subconfig) {
             req['headers'].http_x_proxy_cas_userid = requ.session.cas_user_userId
             req['headers'].http_x_proxy_cas_mobile = requ.session.cas_user_mobile
             req['headers'].http_x_proxy_cas_loginname = requ.session.cas_user_loginName
-            console.log('ws come here 进入upgrade reqheader',req.header);
-            console.log('ws come here 进入upgrade header',head);
-            proxy.ws(req, socket, head);
+            return next()
         })
+        console.log('ws come here 进入upgrade reqheader',req.header);
+        console.log('ws come here 进入upgrade header',head);
+        proxy.ws(req, socket, head);
 
 
 
