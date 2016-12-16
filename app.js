@@ -90,7 +90,16 @@ function run_one(config, subconfig) {
     }
     var proxyServer = http.createServer(app).listen(subconfig.listen_port);
     proxyServer.on('upgrade', function (req, socket, head) {
-        console.log('ws come here 进入proxyServer');
+
+
+        req['headers'].http_x_forwarded_for = req.connection.remoteAddress;
+        req['headers'].http_x_proxy_cas_username = req.session.cas_user_name;
+        req['headers'].http_x_proxy_cas_email = req.session.cas_user_email
+        req['headers'].http_x_proxy_cas_userid = req.session.cas_user_userId
+        req['headers'].http_x_proxy_cas_mobile = req.session.cas_user_mobile
+        req['headers'].http_x_proxy_cas_loginname = req.session.cas_user_loginName
+        console.log('ws come here 进入upgrade reqheader',req.header);
+        console.log('ws come here 进入upgrade header',head);
         proxy.ws(req, socket, head);
     });
     console.log('Server listening on ' + subconfig.listen_port + ' -> ' + subconfig.proxy_url);
