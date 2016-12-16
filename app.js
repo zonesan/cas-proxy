@@ -26,9 +26,10 @@ function run() {
         run_one(config, subconfig);
     }
 }
-
+var loginname = false;
 function run_one(config, subconfig) {
     var app = express();
+
     app.use(express.cookieParser());
     //config.cookie_scope_domain!===
 
@@ -71,6 +72,7 @@ function run_one(config, subconfig) {
         req['headers'].http_x_proxy_cas_mobile = req.session.cas_user_mobile
         req['headers'].http_x_proxy_cas_loginname = req.session.cas_user_loginName
 
+        loginname=req.session.cas_user_loginName;
 
         proxy.web(req, res, {target: subconfig.proxy_url}, function (e) {
             console.log('error ' + e);
@@ -90,15 +92,10 @@ function run_one(config, subconfig) {
     }
     var proxyServer = http.createServer(app).listen(subconfig.listen_port);
     proxyServer.on('upgrade', function (req, socket, head) {
-        app.use(function (requ, res, next) {
-            req['headers'].http_x_forwarded_for = requ.connection.remoteAddress;
-            req['headers'].http_x_proxy_cas_username = requ.session.cas_user_name;
-            req['headers'].http_x_proxy_cas_email = requ.session.cas_user_email
-            req['headers'].http_x_proxy_cas_userid = requ.session.cas_user_userId
-            req['headers'].http_x_proxy_cas_mobile = requ.session.cas_user_mobile
-            req['headers'].http_x_proxy_cas_loginname = requ.session.cas_user_loginName
-            return next()
-        })
+        console.log('loginname',loginname);
+        if (loginname) {
+            req['headers'].http_x_proxy_cas_loginname=loginname
+        }
         console.log('ws come here 进入upgrade reqheader',req.header);
         console.log('ws come here 进入upgrade header',head);
         proxy.ws(req, socket, head);
