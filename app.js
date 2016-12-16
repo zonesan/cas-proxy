@@ -76,10 +76,7 @@ function run_one(config, subconfig) {
             console.log('error ' + e);
         });
 
-        proxyServer.on('upgrade', function (req, socket, head) {
-            console.log('ws come here 进入proxyServer');
-            proxy.ws(req, socket, head);
-        });
+
     });
 
 
@@ -92,5 +89,9 @@ function run_one(config, subconfig) {
         console.log('Server listening on ' + subconfig.listen_port_ssl + '(SSL)');
     }
     var proxyServer = http.createServer(app).listen(subconfig.listen_port);
+    proxyServer.on('upgrade', function (req, socket, head) {
+        console.log('ws come here 进入proxyServer');
+        proxy.ws(req, socket, head);
+    });
     console.log('Server listening on ' + subconfig.listen_port + ' -> ' + subconfig.proxy_url);
 }
