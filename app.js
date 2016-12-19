@@ -37,7 +37,7 @@ function run_one(config, subconfig) {
 
 
     if (config.cookie_scope_domain && config.cookie_scope_domain.length > 0) {
-        console.log("config.cookie_scope_domain",config.cookie_scope_domain)
+        //console.log("config.cookie_scope_domain",config.cookie_scope_domain)
         sessionoption.cookie = {domain: '.' + config.cookie_scope_domain};
     } else {
         console.log("COOKIE_SCOPE_DOMAIN NOT specified or zero value.")
@@ -46,7 +46,7 @@ function run_one(config, subconfig) {
 
     // Authentication
     cas_auth.configureCas(app, config);
-    console.log('ws come here 从cas_auth出来了');
+    //console.log('ws come here 从cas_auth出来了');
 
     var proxy = httpProxy.createProxyServer({
         target: subconfig.proxy_url
@@ -55,7 +55,7 @@ function run_one(config, subconfig) {
     var proxied_hostname = url.parse(subconfig.proxy_url).hostname;
 
     app.use(function (req, res, next) {
-        console.log('ws come here 进入use');
+        //console.log('ws come here 进入use');
         // modify req host header
         //console.log('cas_user_name',req.session.cas_user_name);
         //res.cookie('resc', '设置到cookie里的值', { expires: new Date(Date.now() + 900000), httpOnly: true });
@@ -92,18 +92,10 @@ function run_one(config, subconfig) {
     }
     var proxyServer = http.createServer(app).listen(subconfig.listen_port);
     proxyServer.on('upgrade', function (req, socket, head) {
-        //app.use(function (requ, res, next) {
-        //    req['headers'].http_x_forwarded_for = requ.connection.remoteAddress;
-        //    req['headers'].http_x_proxy_cas_username = requ.session.cas_user_name;
-        //    req['headers'].http_x_proxy_cas_email = requ.session.cas_user_email
-        //    req['headers'].http_x_proxy_cas_userid = requ.session.cas_user_userId
-        //    req['headers'].http_x_proxy_cas_mobile = requ.session.cas_user_mobile
-        //    req['headers'].http_x_proxy_cas_loginname = requ.session.cas_user_loginName
-        //    return next()
-        //})
+
         req['headers'].http_x_proxy_cas_loginname ="user001";
-        console.log('ws come here 进入upgrade reqheader',req.header);
-        console.log('ws come here 进入upgrade header',head);
+       // console.log('ws come here 进入upgrade reqheader',req.header);
+       // console.log('ws come here 进入upgrade header',head);
         proxy.ws(req, socket, head);
 
 
