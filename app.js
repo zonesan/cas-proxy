@@ -72,7 +72,7 @@ function run_one(config, subconfig) {
         req['headers'].http_x_proxy_cas_mobile = req.session.cas_user_mobile
         req['headers'].http_x_proxy_cas_loginname = req.session.cas_user_loginName
 
-        loginname=req.session.cas_user_loginName;
+        loginname = req.session.cas_user_loginName;
 
         proxy.web(req, res, {target: subconfig.proxy_url}, function (e) {
             console.log('error ' + e);
@@ -93,12 +93,10 @@ function run_one(config, subconfig) {
     var proxyServer = http.createServer(app).listen(subconfig.listen_port);
     proxyServer.on('upgrade', function (req, socket, head) {
 
-        req['headers'].http_x_proxy_cas_loginname ="user001";
-       // console.log('ws come here 进入upgrade reqheader',req.header);
-       // console.log('ws come here 进入upgrade header',head);
+        //req['headers'].http_x_proxy_cas_loginname ="user001";
+        // console.log('ws come here 进入upgrade reqheader',req.header);
+        console.log('ws come here 进入upgrad',req.url);
         proxy.ws(req, socket, head);
-
-
 
 
     });
