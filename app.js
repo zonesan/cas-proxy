@@ -49,7 +49,8 @@ function run_one(config, subconfig) {
     //console.log('ws come here 从cas_auth出来了');
 
     var proxy = httpProxy.createProxyServer({
-        target: subconfig.proxy_url
+        target: subconfig.proxy_url,
+        ws: true
     });
 
     var proxied_hostname = url.parse(subconfig.proxy_url).hostname;
@@ -91,6 +92,7 @@ function run_one(config, subconfig) {
         console.log('Server listening on ' + subconfig.listen_port_ssl + '(SSL)');
     }
     var proxyServer = http.createServer(app).listen(subconfig.listen_port);
+
     proxyServer.on('upgrade', function (req, socket, head) {
 
         //req['headers'].http_x_proxy_cas_loginname ="user001";
