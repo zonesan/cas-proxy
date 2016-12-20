@@ -102,5 +102,10 @@ function run_one(config, subconfig) {
 
 
     });
+
+    proxy.on('error', function (err, req, res) {
+        console.log('err', err);
+    });
+
     console.log('Server listening on ' + subconfig.listen_port + ' -> ' + subconfig.proxy_url);
 }
