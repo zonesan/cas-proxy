@@ -45,3 +45,6 @@ CAS Proxy is freely distributable under the terms of the MIT license.
 Copyright (c) 2014 Chris Song
 
 See LICENCE for details.
+
+
+auto build test
