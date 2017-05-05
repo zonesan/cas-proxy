@@ -35,6 +35,12 @@ function run_one(config, subconfig) {
 
     var sessionoption = {secret: config.cookie_secret};
 
+    if (config.session_name && config.session_name.length>0){
+        sessionoption.name = config.session_name;
+    }else{
+        console.log("SESSION_NAME NOT specified, use default value.")
+    }
+
 
     if (config.cookie_scope_domain && config.cookie_scope_domain.length > 0) {
         //console.log("config.cookie_scope_domain",config.cookie_scope_domain)

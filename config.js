@@ -5,6 +5,8 @@ module.exports =  {
 
     "cookie_scope_domain": process.env.COOKIE_SCOPE_DOMAIN,
 
+    "session_name": process.env.SESSION_NAME,
+
     "cookie_secret": "'GC~[YW'K46NT'dhs>3'/1UKP=Vy>RBv?Rw5LOA[@9~93(E;23Q",
 
     replaceHostname: true,
