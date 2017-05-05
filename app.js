@@ -65,7 +65,7 @@ function run_one(config, subconfig) {
         if (isReplaceHostname) {
             req['headers'].host = proxied_hostname;
         }
-        //console.log('req.cookieout',req.cookies);
+        console.log('newconsole',req.session.cas_user_name);
         req['headers'].http_x_forwarded_for = req.connection.remoteAddress;
         req['headers'].http_x_proxy_cas_username = req.session.cas_user_name;
         req['headers'].http_x_proxy_cas_email = req.session.cas_user_email
@@ -97,7 +97,7 @@ function run_one(config, subconfig) {
 
         //req['headers'].http_x_proxy_cas_loginname ="user001";
         // console.log('ws come here 进入upgrade reqheader',req.header);
-        console.log('ws come here 进入upgrad',req.url);
+        //console.log('ws come here 进入upgrad',req.url);
         proxy.ws(req, socket, head);
 
 
