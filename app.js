@@ -33,18 +33,18 @@ function run_one(config, subconfig) {
     app.use(express.cookieParser());
     //config.cookie_scope_domain!===
 
-    var sessionoption = {secret: config.cookie_secret};
+    var sessionoption = { secret: config.cookie_secret };
 
-    if (config.session_name && config.session_name.length>0){
+    if (config.session_name && config.session_name.length > 0) {
         sessionoption.name = config.session_name;
-    }else{
+    } else {
         console.log("SESSION_NAME NOT specified, use default value.")
     }
 
 
     if (config.cookie_scope_domain && config.cookie_scope_domain.length > 0) {
         //console.log("config.cookie_scope_domain",config.cookie_scope_domain)
-        sessionoption.cookie = {domain: '.' + config.cookie_scope_domain};
+        sessionoption.cookie = { domain: '.' + config.cookie_scope_domain };
     } else {
         console.log("COOKIE_SCOPE_DOMAIN NOT specified or zero value.")
     }
@@ -71,20 +71,25 @@ function run_one(config, subconfig) {
         if (isReplaceHostname) {
             req['headers'].host = proxied_hostname;
         }
-        console.log('newconsole',req.session.cas_user_name);
-        req['headers'].http_x_forwarded_for = req.connection.remoteAddress;
-        req['headers'].http_x_proxy_cas_username = req.session.cas_user_name;
-        req['headers'].http_x_proxy_cas_email = req.session.cas_user_email
-        req['headers'].http_x_proxy_cas_userid = req.session.cas_user_userId
-        req['headers'].http_x_proxy_cas_mobile = req.session.cas_user_mobile
-        req['headers'].http_x_proxy_cas_loginname = req.session.cas_user_loginName
 
-        loginname = req.session.cas_user_loginName;
+        if (!req.session.cas_user_name) {
+            console.log('session expires. require login');
+            req.session.destroy();
+            res.redirect('/auth/cas/login');
+        } else {
+            req['headers'].http_x_forwarded_for = req.connection.remoteAddress;
+            req['headers'].http_x_proxy_cas_username = req.session.cas_user_name;
+            req['headers'].http_x_proxy_cas_email = req.session.cas_user_email
+            req['headers'].http_x_proxy_cas_userid = req.session.cas_user_userId
+            req['headers'].http_x_proxy_cas_mobile = req.session.cas_user_mobile
+            req['headers'].http_x_proxy_cas_loginname = req.session.cas_user_loginName
 
-        proxy.web(req, res, {target: subconfig.proxy_url}, function (e) {
-            console.log('error ' + e);
-        });
+            loginname = req.session.cas_user_loginName;
 
+            proxy.web(req, res, { target: subconfig.proxy_url }, function (e) {
+                console.log('error ' + e);
+            });
+        }
 
     });
 
