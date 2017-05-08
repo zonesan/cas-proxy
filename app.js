@@ -73,7 +73,7 @@ function run_one(config, subconfig) {
         }
 
         if (!req.session.cas_user_name) {
-            console.log('session expires. require login');
+            //console.log('session expires. require login');
             req.session.destroy();
             res.redirect('/auth/cas/login');
         } else {
