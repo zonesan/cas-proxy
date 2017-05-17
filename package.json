@@ -19,7 +19,8 @@
   "dependencies": {
     "casv2": "*",
     "express": "3.*",
-    "http-proxy": "*"
+    "http-proxy": "*",
+    "body-parser":"*"
   },
   "devDependencies": {},
   "bugs": {
