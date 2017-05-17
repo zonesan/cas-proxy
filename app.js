@@ -18,7 +18,6 @@ var cas_auth = require('./lib/cas-auth.js');
 
 console.log('Server starting...');
 
-
 run();
 function run() {
     for (i in config.proxy_settings) {
@@ -33,7 +32,7 @@ function run_one(config, subconfig) {
     app.use(express.cookieParser());
     //config.cookie_scope_domain!===
 
-    var sessionoption = { secret: config.cookie_secret };
+    var sessionoption = { secret: config.cookie_secret  };
 
     if (config.session_name && config.session_name.length > 0) {
         sessionoption.name = config.session_name;
@@ -93,7 +92,7 @@ function run_one(config, subconfig) {
 
     });
 
-    
+
     if (subconfig.enable_ssl_port === true) {
         var options = {
             key: fs.readFileSync(subconfig.ssl_key_file),
