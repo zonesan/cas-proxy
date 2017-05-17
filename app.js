@@ -61,11 +61,7 @@ function run_one(config, subconfig) {
     var proxied_hostname = url.parse(subconfig.proxy_url).hostname;
 
     app.use(function (req, res, next) {
-        //console.log('ws come here 进入use');
-        // modify req host header
-        //console.log('cas_user_name',req.session.cas_user_name);
-        //res.cookie('resc', '设置到cookie里的值', { expires: new Date(Date.now() + 900000), httpOnly: true });
-        //console.log('cas_session:',req.session);
+
         isReplaceHostname = (subconfig.replaceHostname === undefined) ? (config.replaceHostname || false) : subconfig.replaceHostname
         if (isReplaceHostname) {
             req['headers'].host = proxied_hostname;
