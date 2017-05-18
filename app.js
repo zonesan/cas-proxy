@@ -16,6 +16,15 @@ var httpProxy = require('http-proxy');
 var config = require('./config');
 var cas_auth = require('./lib/cas-auth.js');
 
+console.logCopy = console.log.bind(console);
+
+console.log = function (fmt) {
+    // var ts = '[' + new Date().toUTCString() + '] ';
+    var ts = '[' + Date() + '] ';
+    console.logCopy(ts, fmt);
+}
+
+
 console.log('Server starting...');
 
 run();
