@@ -18,12 +18,31 @@ var cas_auth = require('./lib/cas-auth.js');
 
 console.logCopy = console.log.bind(console);
 
-console.log = function (fmt) {
-    // var ts = '[' + new Date().toUTCString() + '] ';
-    var ts = '[' + Date() + '] ';
-    console.logCopy(ts, fmt);
-}
+console.log = function () {
+    // Timestamp to prepend
+    var timestamp = new Date().toJSON();
+    var ts = "[" + Date() + "] ";
+    if (arguments.length) {
+        // True array copy so we can call .splice()
+        var args = Array.prototype.slice.call(arguments, 0);
+        // If there is a format string then... it must
+        // be a string
+        if (typeof arguments[0] === "string") {
+            // Prepend timestamp to the (possibly format) string
+            args[0] = ts + arguments[0];
 
+            // Insert the timestamp where it has to be
+            // args.splice(1, 0, ts);
+
+            // Log the whole array
+            this.logCopy.apply(this, args);
+        }
+        else {
+            // "Normal" log
+            this.logCopy(ts, args);
+        }
+    }
+};
 
 console.log('Server starting...');
 
@@ -41,7 +60,7 @@ function run_one(config, subconfig) {
     app.use(express.cookieParser());
     //config.cookie_scope_domain!===
 
-    var sessionoption = { secret: config.cookie_secret  };
+    var sessionoption = { secret: config.cookie_secret };
 
     if (config.session_name && config.session_name.length > 0) {
         sessionoption.name = config.session_name;
